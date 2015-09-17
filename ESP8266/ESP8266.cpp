@@ -8,7 +8,7 @@
 #include "ESP8266.h"
 
 // Constructor
-//Input: the SoftwareSerial chosed, the publish topic
+// Input: the SoftwareSerial chosed, the publish topic
 ESP8266::ESP8266 (SoftwareSerial *stream, String Publishtopic)
 {
 	_stream= stream;
@@ -38,18 +38,14 @@ void ESP8266::Init (String UserName, String Passwd, String TestTopic, String Pub
 		connectionCommand= "m:connect(\"m11.cloudmqtt.com\", 10415, 0, function(conn) print(\"connected@\") end)";
 		_stream->println(connectionCommand);
 		delay (10);
-		//Serial.println ( ESP8266_ReadResponceIUntilConnected (_stream) ); 
-		//Serial.println ( ESP8266_ReadResponce (_stream) );
 		 connectionChecker= ESP8266_ReadResponceIUntilConnected (_stream);
-		 //Serial.println ( ESP8266_ReadResponceIUntilConnected (_stream) );
-		 //Serial.println ( ESP8266_ReadResponce (_stream) );
 		 connectionChecker+= ESP8266_ReadResponce (_stream);
 		 connectionChecker+= ESP8266_ReadResponce (_stream);
 	} while ( (connectionChecker < connectionCommand) ||
 			  (connectionChecker == connectionCommand) );
 	delay (10);
 	String test;
-	if (TestTopic != "0") // Entering 0 means no subscription
+	if (TestTopic != "0") // Entering 0 means no test publish
 	{
 	// Dummy publish for testing
 		connectionCommand= "m:publish(\""+TestTopic+"\",\""+PubMsg+"\", 0, 0, function(conn) print(\"sent\") end)";
@@ -109,10 +105,7 @@ String ESP8266::ReceiveMsg (void)
     mqttRecvCmd= "m:on(\"message\", function(conn, topic, data) print(topic .. \":\" ) if data ~= nil then print(data) end end)";
     _stream->println (mqttRecvCmd);
 	mqttRecvMsg= ESP8266_ReadResponce (_stream);
-    if (mqttRecvMsg.length() > mqttRecvCmd.length())
-		return (mqttRecvMsg);
-	//else
-		//return "0";
+	return (mqttRecvMsg);
 }
 
 int interval= 10000;

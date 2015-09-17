@@ -1,4 +1,8 @@
-
+// ESP8266 Wireless Library
+// Supports NodeMCU Firmware Software
+// Arduino Hardware "Tested on the Arduino UNO Platform"
+// By Mo'meN M. Ali, 17 of September, 2015
+// IBM Cor.
 
 #include "Arduino.h"
 #include <SoftwareSerial.h>
